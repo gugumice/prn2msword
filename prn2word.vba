@@ -51,6 +51,7 @@ Sub Text2Doc(s As String, Optional ByVal pm As Boolean = False)
     End If
 End Sub
 Sub prnReport(fileName)
+    On Error GoTo Err:
     Dim fso As Object
     Dim objFile As Object
     Dim strLine As String
@@ -87,8 +88,13 @@ Sub prnReport(fileName)
             Text2Doc strLine
         End If
     Loop
+Done:
+    Exit Sub
+Err:
+    MsgBox "Error: " & Err.Description
 End Sub
 Sub PRN_TXT()
+    On Error GoTo Err:
     Dim strFolder As String
     Dim oFSO As Object
     Dim oFolder As Object
@@ -100,4 +106,8 @@ Sub PRN_TXT()
         Debug.Print oFile.path, oFile.Type
         If oFile.Type = "PRN File" Then prnReport (oFile.path)
     Next oFile
+Done:
+    Exit Sub
+Err:
+    MsgBox "Folderis nav izvēlēts!"
 End Sub
