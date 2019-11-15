@@ -62,7 +62,7 @@ Sub prnReport(fileName)
     Set objFile = fso.OpenTextFile(fileName, 1)
     boolSkipBlank = False
     boolSkipLine = False
-    Const FILTER_KEYWORDS = "%%[,Answered by the,SUBJECT:,PROTOCOLE COMPLET,FAX,FROM,COMMENT,TO,Dr. LABORATORIJA,Zemitana,1006 RIGA,7545052,SUBCONTRACTING,Results and comments comming,Answered by,Hospital,Results and comments"
+    Const FILTER_KEYWORDS = "%%[,Answered by the,SUBJECT:,PROTOCOLE COMPLET,FAX,FROM,COMMENT,TO,Dr. LABORATORIJA, Zemitana,1006 RIGA,7545052,SUBCONTRACTING,Results and comments comming,Answered by,Hospital,Results and comments"
     Do Until objFile.AtEndOfStream
         boolSkipLine = False
         strLine = objFile.ReadLine
@@ -99,13 +99,22 @@ Sub PRN_TXT()
     Dim oFSO As Object
     Dim oFolder As Object
     Dim oFile As Object
+    Dim iCnt As Integer
     strFolder = getDirectory(Options.DefaultFilePath(wdDocumentsPath))
     Set oFSO = CreateObject("Scripting.FileSystemObject")
     Set oFolder = oFSO.GetFolder(strFolder)
     For Each oFile In oFolder.Files
-        Debug.Print oFile.path, oFile.Type
-        If oFile.Type = "PRN File" Then prnReport (oFile.path)
+        'Debug.Print oFile.path, oFile.Type
+        If oFile.Type = "PRN File" Then
+            prnReport (oFile.path)
+            iCnt = iCnt + 1
+        End If
     Next oFile
+    If iCnt = 0 Then
+        MsgBox "PRN faili nav atrasti! "
+        Exit Sub
+    End If
+    Dialogs(wdDialogFilePrint).Show
 Done:
     Exit Sub
 Err:
