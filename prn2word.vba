@@ -88,3 +88,16 @@ Sub prnReport(fileName)
         End If
     Loop
 End Sub
+Sub PRN_TXT()
+    Dim strFolder As String
+    Dim oFSO As Object
+    Dim oFolder As Object
+    Dim oFile As Object
+    strFolder = getDirectory(Options.DefaultFilePath(wdDocumentsPath))
+    Set oFSO = CreateObject("Scripting.FileSystemObject")
+    Set oFolder = oFSO.GetFolder(strFolder)
+    For Each oFile In oFolder.Files
+        Debug.Print oFile.path, oFile.Type
+        If oFile.Type = "PRN File" Then prnReport (oFile.path)
+    Next oFile
+End Sub
